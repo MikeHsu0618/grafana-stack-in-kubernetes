@@ -130,6 +130,12 @@ loki:
       rule_path: /tmp/loki/scratch
       alertmanager_url: https://alertmanager.xx
       external_url: https://alertmanager.xx
+    
+    query_scheduler:
+      max_outstanding_requests_per_tenant: 32768
+
+    querier:
+      max_concurrent: 16
 
   schemaConfig:
     configs:

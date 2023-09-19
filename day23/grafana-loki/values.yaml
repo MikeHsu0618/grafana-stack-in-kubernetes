@@ -59,28 +59,29 @@ gateway:
     password: log-password
 
 compactor:
-  enabled: false
+  enabled: true
   resources: {}
 
 memcachedExporter:
-  enabled: false
+  enabled: true
 
 memcachedChunks:
-  enabled: false
+  enabled: true
   replicas: 1
   resources: {}
 
 memcachedFrontend:
-  enabled: false
+  enabled: true
   replicas: 1
   resources: {}
 
+# TSDB not required
 memcachedIndexQueries:
-  enabled: false
+  enabled: true
   replicas: 1
   resources: {}
 
-
+# TSDB not required
 memcachedIndexWrites:
-  enabled: false
+  enabled: true
   resources: {}
