@@ -1,0 +1,28 @@
+# Source: loki-simple-scalable/templates/monitoring/pod-logs.yaml
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: PodLogs
+metadata:
+  name: loki-pod-logs
+  namespace: logging
+  labels:
+    instance: primary
+spec:
+  pipelineStages:
+    - cri: { }
+  relabelings:
+    - action: replace
+      replacement: $1
+      separator: /
+      sourceLabels:
+          - __meta_kubernetes_namespace
+          - __meta_kubernetes_pod_container_name
+      targetLabel: job
+    - action: replace
+      sourceLabels:
+          - __meta_kubernetes_pod_container_name
+      targetLabel: name
+    - replacement: "test-loki"
+      targetLabel: cluster
+  namespaceSelector:
+    any: true
+  selector: {}

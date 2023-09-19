@@ -1,0 +1,14 @@
+fullnameOverride: promtail
+
+daemonset:
+  enabled: true
+
+config:
+  clients:
+    - url: http://loki-gateway.logging/loki/api/v1/push
+      tenant_id: log-user
+      external_labels:
+        cluster: docker-desktop
+      basic_auth:
+        username: log-user
+        password: log-password

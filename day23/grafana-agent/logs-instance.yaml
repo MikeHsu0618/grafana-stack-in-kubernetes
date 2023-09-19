@@ -1,0 +1,35 @@
+# Source: loki-simple-scalable/templates/monitoring/logs-instance.yaml
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: LogsInstance
+metadata:
+  name: loki-logs-instance
+  namespace: logging
+  labels:
+    agent: grafana-agent-logs
+spec:
+  clients:
+    - url: http://loki-gateway.logging/loki/api/v1/push
+      tenantId: "log-user"
+      externalLabels:
+        cluster: docker-desktop
+      basicAuth:
+        username:
+          name: log-secret
+          key: username
+        password:
+          name: log-secret
+          key: password
+  podLogsNamespaceSelector: {}
+
+  podLogsSelector:
+    matchLabels:
+      instance: primary
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: log-secret
+  namespace: logging
+stringData:
+  username: 'log-user'
+  password: 'log-password'

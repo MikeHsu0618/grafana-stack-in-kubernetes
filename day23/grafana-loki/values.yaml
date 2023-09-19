@@ -1,0 +1,86 @@
+fullnameOverride: loki
+
+customParams:
+  authEnabled: true
+
+# ServiceMonitor configuration
+serviceMonitor:
+  enabled: true
+
+# Rules for the Prometheus Operator
+prometheusRule:
+  enabled: true
+
+# Configuration for the ingester
+ingester:
+  # -- Kind of deployment [StatefulSet/Deployment]
+  kind: StatefulSet
+  replicas: 1
+  autoscaling:
+    enabled: false
+
+# Configuration for the distributor
+distributor:
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+
+# Configuration for the querier
+querier:
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+# Configuration for the query-frontend
+queryFrontend:
+  replicas: 1
+  autoscaling:
+    enabled: false
+
+queryScheduler:
+  enabled: true
+  replicas: 2
+  affinity: ''
+  resources: {}
+
+gateway:
+  enabled: true
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+  basicAuth:
+    enabled: true
+    username: log-user
+    password: log-password
+
+compactor:
+  enabled: false
+  resources: {}
+
+memcachedExporter:
+  enabled: false
+
+memcachedChunks:
+  enabled: false
+  replicas: 1
+  resources: {}
+
+memcachedFrontend:
+  enabled: false
+  replicas: 1
+  resources: {}
+
+memcachedIndexQueries:
+  enabled: false
+  replicas: 1
+  resources: {}
+
+
+memcachedIndexWrites:
+  enabled: false
+  resources: {}
