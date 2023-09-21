@@ -3,42 +3,36 @@ fullnameOverride: loki
 customParams:
   authEnabled: true
 
-# ServiceMonitor configuration
 serviceMonitor:
   enabled: true
 
-# Rules for the Prometheus Operator
 prometheusRule:
   enabled: true
 
-# Configuration for the ingester
 ingester:
-  # -- Kind of deployment [StatefulSet/Deployment]
   kind: StatefulSet
   replicas: 1
   autoscaling:
     enabled: false
+  resources: {}
 
-# Configuration for the distributor
 distributor:
   replicas: 1
   autoscaling:
     enabled: false
   resources: {}
 
-
-# Configuration for the querier
 querier:
   replicas: 1
   autoscaling:
     enabled: false
   resources: {}
 
-# Configuration for the query-frontend
 queryFrontend:
   replicas: 1
   autoscaling:
     enabled: false
+  resources: {}
 
 queryScheduler:
   enabled: true
@@ -77,11 +71,11 @@ memcachedFrontend:
 
 # TSDB not required
 memcachedIndexQueries:
-  enabled: true
+  enabled: false
   replicas: 1
   resources: {}
 
 # TSDB not required
 memcachedIndexWrites:
-  enabled: true
+  enabled: false
   resources: {}

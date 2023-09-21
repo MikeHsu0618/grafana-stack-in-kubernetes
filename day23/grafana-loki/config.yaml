@@ -131,11 +131,12 @@ loki:
       alertmanager_url: https://alertmanager.xx
       external_url: https://alertmanager.xx
     
+    ### Custom Configs ###
     query_scheduler:
-      max_outstanding_requests_per_tenant: 32768
+      max_outstanding_requests_per_tenant: 32768 # default 100
 
     querier:
-      max_concurrent: 16
+      max_concurrent: 16 # default 10
 
   schemaConfig:
     configs:
