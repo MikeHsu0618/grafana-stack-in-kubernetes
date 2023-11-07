@@ -1,3 +1,4 @@
+# configmap.yaml
 loki:
   config: |
     auth_enabled: {{ .Values.customParams.authEnabled }}

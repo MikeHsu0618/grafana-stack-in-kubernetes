@@ -1,3 +1,5 @@
+# 可觀測性宇宙的第四天 - 可觀測性三本柱是什麼？
+
 # 概述
 
 在 Kubernetes 的生態系中，我們獲得了前所未有的容器彈性，這大大助益於微服務的建構與複雜的容器編排。它為我們提供了一個強大且靈活的平台，使我們能夠快速響應並適應變動多端的需求。
@@ -106,7 +108,7 @@
 這就是為什麼工具選擇如此關鍵。接下來要介紹的服務 Grafana 不僅僅是一個可視化工具，它也是一個綜合性的可觀測性平台。它的設計考慮到了這三本柱的獨特性質和挑戰，並嘗試通過一個統一的界面來解決它們。特別是，Grafana 在整合、分析和視覺呈現來自不同來源的數據時，從而幫助使用者輕鬆地跨越界限。
 
 ---
-Reference
+References
 
 [Metrics vs. Logs vs. Traces (vs. Profiles) - SquaredUp](https://squaredup.com/blog/metrics-vs-logs-vs-traces-vs-profiles/)
 

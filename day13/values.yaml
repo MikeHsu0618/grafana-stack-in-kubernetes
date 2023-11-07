@@ -1,0 +1,91 @@
+# values.yaml
+fullnameOverride: "prometheus-stack"
+
+kubeScheduler:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+kubeEtcd:
+  enabled: true
+
+kubeProxy:
+  enabled: true
+
+kubeApiServer:
+  enabled: true
+
+kube-state-metrics:
+  prometheus:
+    monitor:
+      enabled: true
+  selfMonitor:
+    enabled: true
+
+kubelet:
+  enabled: true
+  serviceMonitor:
+    cAdvisor: true
+
+nodeExporter:
+  enabled: true
+  hostRootfs: true
+
+prometheus-node-exporter:
+  hostRootFsMount:
+    enabled: true
+
+alertmanager:
+  enabled: true
+
+grafana:
+  enabled: true
+
+  adminUser: admin
+  adminPassword: admin
+
+  defaultDashboardsEnabled: true
+  defaultDashboardsTimezone: Asia/Taipei
+
+  grafana.ini:
+    users:
+      viewers_can_edit: true
+
+  persistence:
+    accessModes:
+      - ReadWriteOnce
+    enabled: true
+    size: 10Gi
+    type: pvc
+
+prometheusOperator:
+  enabled: true
+
+crds:
+  enabled: true
+
+prometheus:
+  enabled: true
+
+  agentMode: false
+  prometheusSpec:
+    enableFeatures: []
+
+    enableRemoteWriteReceiver: false
+    remoteWriteDashboards: false
+
+    retention: 10d
+
+    remoteWrite: []
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: hostpath
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+    additionalScrapeConfigs: []

@@ -1,3 +1,5 @@
+# 可觀測性宇宙的第五天 - 第四種可觀測性訊號？ Profile
+
 # 概述
 
 在雲原生架構中，找出效能問題和不良的 CPU 使用率成了一個困難且極具挑戰性的過程。
@@ -67,7 +69,7 @@ OpenTelemetry 社群在經過 KubeCon Europe 2022 的討論後，於2022 年 6 �
 我們都已經習慣了日誌、指標和軌跡作為可觀測性三本柱，他們都是非常重要的遙測訊號，但他們就足以代表可觀測性的全部嗎？一點也不，雖然這三個支柱仍然至關重要，但重要的是不要受到三大支柱制式的限制，我們必須根據自己的需求選擇正確的遙測數據。以我自己的話來說：真正的可觀測性就是超越原本的可觀測性。
 
 ---
-Reference
+References
 [Continuous profiling now in public preview in Grafana Cloud | Grafana Labs](https://grafana.com/blog/2023/06/07/continuous-profiling-now-in-public-preview-in-grafana-cloud/)
 
 [Observability 3 本柱＋Profile 打造完整可觀測性解決方案 - 歐立威科技](https://www.omniwaresoft.com.tw/product-news/elastic-news/observability-profiling-metrics-logs-traces/)

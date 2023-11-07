@@ -1,3 +1,4 @@
+# values.yaml
 fullnameOverride: loki
 
 customParams:
@@ -46,7 +47,6 @@ gateway:
   autoscaling:
     enabled: false
   resources: {}
-
   basicAuth:
     enabled: true
     username: log-user
@@ -54,28 +54,4 @@ gateway:
 
 compactor:
   enabled: true
-  resources: {}
-
-memcachedExporter:
-  enabled: true
-
-memcachedChunks:
-  enabled: true
-  replicas: 1
-  resources: {}
-
-memcachedFrontend:
-  enabled: true
-  replicas: 1
-  resources: {}
-
-# TSDB not required
-memcachedIndexQueries:
-  enabled: false
-  replicas: 1
-  resources: {}
-
-# TSDB not required
-memcachedIndexWrites:
-  enabled: false
   resources: {}

@@ -1,0 +1,12 @@
+# values.yaml
+fullnameOverride: grafana-agent-flow
+
+agent:
+  mode: 'flow'
+  clustering:
+    enabled: true
+  enableReporting: false
+controller:
+  type: 'statefulset'
+  replicas: 3
+  volumeClaimTemplates: []

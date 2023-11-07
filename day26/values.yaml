@@ -1,0 +1,114 @@
+# values.yaml
+fullnameOverride: 'tempo'
+
+reportingEnabled: false
+
+multitenancyEnabled: false
+
+global_overrides:
+  metrics_generator_processors:
+    - service-graphs
+    - span-metrics
+
+ingester:
+  replicas: 3
+  autoscaling:
+    enabled: false
+  resources: {}
+  persistence:
+    enabled: true
+  config:
+    replication_factor: 3
+
+metricsGenerator:
+  enabled: true
+  replicas: 1
+  resources: {}
+  config:
+    storage:
+      remote_write:
+        - send_exemplars: true
+          url: http://prometheus-stack-prometheus.prometheus:9090/api/v1/write
+
+distributor:
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+compactor:
+  replicas: 1
+  resources: {}
+  config:
+    compaction:
+      block_retention: 48h
+
+querier:
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+queryFrontend:
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}
+
+traces:
+  jaeger:
+    grpc:
+      enabled: true
+    thriftBinary:
+      enabled: true
+    thriftCompact:
+      enabled: true
+    thriftHttp:
+      enabled: true
+  zipkin:
+    enabled: true
+  otlp:
+    http:
+      enabled: true
+    grpc:
+      enabled: true
+  opencensus:
+    enabled: true
+  kafka: {}
+
+storage:
+  trace:
+    backend: local
+
+memcached:
+  enabled: true
+  replicas: 1
+  resources: {}
+
+memcachedExporter:
+  enabled: true
+  resources: {}
+
+metaMonitoring:
+  serviceMonitor:
+    enabled: true
+
+  grafanaAgent:
+    enabled: false
+    installOperator: false
+    logs:
+      remote:
+        url: ''
+    metrics:
+      remote:
+        url: ''
+
+prometheusRule:
+  enabled: true
+
+gateway:
+  enabled: true
+  replicas: 1
+  autoscaling:
+    enabled: false
+  resources: {}

@@ -1,0 +1,188 @@
+# cAdvisor.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - cadvisor
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: cadvisor
+  name: cadvisor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cadvisor
+subjects:
+  - kind: ServiceAccount
+    name: cadvisor
+    namespace: kube-system
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: docker/default
+  labels:
+    app: cadvisor
+  name: cadvisor
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+      name: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+        name: cadvisor
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - args:
+            - --housekeeping_interval=10s
+            - --max_housekeeping_interval=15s
+            - --event_storage_event_limit=default=0
+            - --event_storage_age_limit=default=0
+            - --enable_metrics=app,cpu,disk,diskIO,memory,network,process
+            - --docker_only
+            - --store_container_labels=false
+            - --whitelisted_container_labels=io.kubernetes.container.name,io.kubernetes.pod.name,io.kubernetes.pod.namespace
+          image: gcr.io/cadvisor/cadvisor:v0.45.0
+          name: cadvisor
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 800m
+              memory: 2000Mi
+            requests:
+              cpu: 400m
+              memory: 400Mi
+          volumeMounts:
+            - mountPath: /rootfs
+              name: rootfs
+              readOnly: true
+            - mountPath: /var/run
+              name: var-run
+              readOnly: true
+            - mountPath: /sys
+              name: sys
+              readOnly: true
+            - mountPath: /var/lib/docker
+              name: docker
+              readOnly: true
+            - mountPath: /dev/disk
+              name: disk
+              readOnly: true
+      priorityClassName: system-node-critical
+      serviceAccountName: cadvisor
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - key: node-role.kubernetes.io/controlplane
+          value: "true"
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/etcd
+          value: "true"
+          effect: NoExecute
+      volumes:
+        - hostPath:
+            path: /
+          name: rootfs
+        - hostPath:
+            path: /var/run
+          name: var-run
+        - hostPath:
+            path: /sys
+          name: sys
+        - hostPath:
+            path: /var/lib/docker
+          name: docker
+        - hostPath:
+            path: /dev/disk
+          name: disk
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadvisor
+  labels:
+    app: cadvisor
+  namespace: kube-system
+spec:
+  selector:
+    app: cadvisor
+  ports:
+    - name: cadvisor
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: cadvisor
+    release: prometheus-stack
+  name: cadvisor
+  namespace: kube-system
+spec:
+  endpoints:
+    - metricRelabelings:
+        - sourceLabels:
+            - container_label_io_kubernetes_pod_name
+          targetLabel: pod
+        - sourceLabels:
+            - container_label_io_kubernetes_container_name
+          targetLabel: container
+        - sourceLabels:
+            - container_label_io_kubernetes_pod_namespace
+          targetLabel: namespace
+        - action: labeldrop
+          regex: container_label_io_kubernetes_pod_name
+        - action: labeldrop
+          regex: container_label_io_kubernetes_container_name
+        - action: labeldrop
+          regex: container_label_io_kubernetes_pod_namespace
+      port: cadvisor
+      relabelings:
+        - sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          targetLabel: node
+        - sourceLabels:
+            - __metrics_path__
+          targetLabel: metrics_path
+          replacement: /metrics/cadvisor
+        - sourceLabels:
+            - job
+          targetLabel: job
+          replacement: kubelet
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: cadvisor

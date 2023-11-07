@@ -1,3 +1,5 @@
+# 可觀測性宇宙的第六天 - Grafana 上的可觀測性宇宙
+
 # 概述
 
 如果講到 Grafana 這家以開源為精神指標的公司，我想很多人第一個反應都跟我一樣，就是那個「可以把資料變成好看圖表的 Dashboard 工具」吧。直到逐漸地接近真相後，我才發現之前的自己好傻好天真。
@@ -87,7 +89,7 @@ Grafana 藉由專精的技術策略，不僅實現了Logging、Tracing、和Metr
 現在，我們正準備進入充滿期待的實戰部分。在接下來的章節中，我會逐步指導大家如何搭建屬於自己的可觀測性平台，並利用 Grafana 的 LGTM 技術進行完美整合。
 
 ---
-Reference
+References
 
 [Correlate Your Metrics, Logs & Traces with the curated OSS observability stack from Grafana Labs](https://www.youtube.com/watch?v=qVITI34ZFuk&ab_channel=Grafana)
 

@@ -1,0 +1,26 @@
+# metrics-instance.yaml
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: MetricsInstance
+metadata:
+  name: primary
+  namespace: monitoring
+  labels:
+    agent: grafana-agent-metrics
+spec:
+  remoteWrite:
+    - url: http://prometheus-stack-prometheus.prometheus:9090/api/v1/write
+
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      name: postgres-exporter-podmonitor
+
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector:
+    matchLabels:
+      name: postgres-exporter-podmonitor
+
+  probeNamespaceSelector: {}
+  probeSelector:
+    matchLabels:
+      name: postgres-exporter-podmonitor

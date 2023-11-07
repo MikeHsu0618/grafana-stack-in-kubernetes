@@ -1,0 +1,32 @@
+# postgres-with-exporter.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-with-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-with-exporter
+  template:
+    metadata:
+      labels:
+        app: postgres-with-exporter
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          env:
+            - name: POSTGRES_PASSWORD
+              value: yourpassword
+          ports:
+            - containerPort: 5432
+
+        - name: postgres-exporter
+          image: wrouesnel/postgres_exporter:latest
+          ports:
+            - containerPort: 9187
+              name: metrics
+          env:
+            - name: DATA_SOURCE_NAME
+              value: postgres://postgres:yourpassword@localhost:5432/postgres?sslmode=disable

@@ -1,0 +1,14 @@
+# postgres-podmonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: postgres-exporter-podmonitor
+  labels:
+    name: postgres-exporter-podmonitor
+spec:
+  selector:
+    matchLabels:
+      app: postgres-with-exporter
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 30s

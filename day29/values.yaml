@@ -1,0 +1,101 @@
+# values.yaml
+fullnameOverride: mimir
+
+global:
+  extraEnv:
+    - name: JAEGER_AGENT_HOST
+      value: tempo-distributor.tracing
+    - name: JAEGER_SAMPLER_PARAM
+      value: "1"
+
+mimir:
+  structuredConfig: {}
+
+runtimeConfig: {}
+
+distributor:
+  replicas: 1
+
+ingester:
+  replicas: 3
+  statefulSet:
+    enabled: true
+  persistentVolume:
+    enabled: true
+  zoneAwareReplication:
+    enabled: false
+
+querier:
+  replicas: 2
+
+query_frontend:
+  replicas: 1
+
+query_scheduler:
+  enabled: true
+  replicas: 2
+
+store_gateway:
+  replicas: 1
+  zoneAwareReplication:
+    enabled: false
+
+compactor:
+  replicas: 1
+
+memcachedExporter:
+  enabled: false
+
+chunks-cache:
+  enabled: false
+  replicas: 1
+
+index-cache:
+  enabled: false
+  replicas: 1
+
+metadata-cache:
+  enabled: false
+  replicas: 1
+
+results-cache:
+  enabled: false
+  replicas: 1
+
+rollout_operator:
+  enabled: true
+
+minio:
+  enabled: true
+
+nginx:
+  enabled: false
+
+gateway:
+  enabledNonEnterprise: true
+  replicas: 1
+  autoscaling:
+    enabled: false
+
+alertmanager:
+  enabled: true
+  zoneAwareReplication:
+    enabled: false
+
+overrides_exporter:
+  enabled: true
+  replicas: 1
+
+ruler:
+  enabled: true
+  replicas: 1
+
+metaMonitoring:
+  dashboards:
+    enabled: true
+  serviceMonitor:
+    enabled: ture
+  prometheusRule:
+    enabled: true
+  grafanaAgent:
+    enabled: false
