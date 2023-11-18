@@ -67,6 +67,6 @@
 - [可觀測性宇宙的第三十一天 - Grafana Tempo 搭配 Odigos 實現 NoCode Observability](https://ithelp.ithome.com.tw/articles/10340539)
 ---
 
-- GIthub：https://github.com/MikeHsu0618
+- Github：https://github.com/MikeHsu0618
 - Facebook：https://www.facebook.com/mike.hsu.775
 - Gmail：a3695821tw11@gmail.com
