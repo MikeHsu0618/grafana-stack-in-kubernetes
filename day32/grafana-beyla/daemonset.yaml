@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: beyla
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      instrumentation: beyla
+  template:
+    metadata:
+      labels:
+        instrumentation: beyla
+    spec:
+      containers:
+        - command:
+            - /beyla
+            - --config=/config/beyla-config.yml
+          env:
+            - name: BEYLA_DISCOVERY_POLL_INTERVAL
+              value: 500ms
+            - name: BEYLA_METRICS_INTERVAL
+              value: 10ms
+            - name: BEYLA_BPF_BATCH_TIMEOUT
+              value: 10ms
+            - name: BEYLA_METRICS_REPORT_TARGET
+              value: "true"
+            - name: BEYLA_METRICS_REPORT_PEER
+              value: "true"
+          image: grafana/beyla:latest
+          imagePullPolicy: Always
+          name: beyla
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /config
+              name: beyla-config
+      hostPID: true
+      restartPolicy: Always
+      securityContext: {}
+      volumes:
+        - configMap:
+            name: beyla-config
+          name: beyla-config

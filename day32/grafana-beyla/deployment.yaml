@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goblog
+  labels:
+    app: goblog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: goblog
+  template:
+    metadata:
+      labels:
+        app: goblog
+    spec:
+      # Required so the sidecar instrument tool can access the service process
+      shareProcessNamespace: true
+      containers:
+        # Container for the instrumented service
+        - name: goblog
+          image: mariomac/goblog:dev
+          imagePullPolicy: IfNotPresent
+          command: ["/goblog"]
+          env:
+            - name: "GOBLOG_CONFIG"
+              value: "/sample/config.yml"
+          ports:
+            - containerPort: 8443
+              name: https
+        # Sidecar container with Beyla - the eBPF auto-instrumentation tool
+        - name: autoinstrument
+          image: grafana/beyla:latest
+          securityContext: # Privileges are required to install the eBPF probes
+            runAsUser: 0
+            capabilities:
+              add:
+                - SYS_ADMIN
+          env:
+            - name: BEYLA_OPEN_PORT # The internal port of the goblog application container
+              value: "8443"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://tempo-distributor.tracing:4317"

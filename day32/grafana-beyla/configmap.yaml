@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beyla-config
+data:
+  beyla-config.yml: |
+    print_traces: true
+    log_level: debug
+    discovery:
+      services:
+        - namespace: default
+          exe_path_regexp: node
+    otel_traces_export:
+      endpoint: http://tempo-distributor.tracing:4317
