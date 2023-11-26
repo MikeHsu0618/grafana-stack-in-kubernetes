@@ -16,6 +16,7 @@ spec:
     spec:
       # Required so the sidecar instrument tool can access the service process
       shareProcessNamespace: true
+      serviceAccountName: beyla # required if you want kubernetes metadata decoration
       containers:
         # Container for the instrumented service
         - name: goblog
@@ -28,16 +29,17 @@ spec:
           ports:
             - containerPort: 8443
               name: https
-        # Sidecar container with Beyla - the eBPF auto-instrumentation tool
-        - name: autoinstrument
-          image: grafana/beyla:latest
-          securityContext: # Privileges are required to install the eBPF probes
-            runAsUser: 0
-            capabilities:
-              add:
-                - SYS_ADMIN
-          env:
-            - name: BEYLA_OPEN_PORT # The internal port of the goblog application container
-              value: "8443"
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://tempo-distributor.tracing:4317"
+#        # Sidecar container with Beyla - the eBPF auto-instrumentation tool
+#        - name: beyla
+#          image: grafana/beyla:latest
+#          securityContext: # Privileges are required to install the eBPF probes
+#            privileged: true
+#          env:
+#            # The internal port of the goblog application container
+#            - name: BEYLA_OPEN_PORT
+#              value: "8443"
+#            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+#              value: "http://grafana-agent:4318"
+#              # required if you want kubernetes metadata decoration
+#            - name: BEYLA_KUBE_METADATA_ENABLE
+#              value: "true"

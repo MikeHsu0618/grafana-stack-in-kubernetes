@@ -6,9 +6,17 @@ data:
   beyla-config.yml: |
     print_traces: true
     log_level: debug
-    discovery:
-      services:
-        - namespace: default
-          exe_path_regexp: node
     otel_traces_export:
       endpoint: http://tempo-distributor.tracing:4317
+    executable_name: "goblog"
+    attributes:
+      kubernetes:
+        enable: true
+    #open_port: 80,443,8000-8999
+#    routes:
+#      patterns:
+#        - /*
+      #    discovery:
+#      services:
+#        - namespace: default
+#          exe_path_regexp: node
