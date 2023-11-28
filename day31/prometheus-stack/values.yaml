@@ -87,7 +87,8 @@ prometheus:
   agentMode: false
 
   prometheusSpec:
-    enableFeatures: []
+    enableFeatures:
+      - exemplar-storage
 
     enableRemoteWriteReceiver: true
     remoteWriteDashboards: true

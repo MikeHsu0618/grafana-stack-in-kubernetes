@@ -8,11 +8,19 @@ data:
     log_level: debug
     otel_traces_export:
       endpoint: http://tempo-distributor.tracing:4317
-    executable_name: "goblog"
-    attributes:
-      kubernetes:
-        enable: true
-    #open_port: 80,443,8000-8999
+    prometheus_export:
+      port: 8999
+      path: /metrics
+      report_target: false
+      report_peer: false
+    internal_metrics:
+      port: 8990
+      path: /metrics
+    open_port: 80-8999
+    #executable_name: "goblog"
+#    attributes:
+#      kubernetes:
+#        enable: true
 #    routes:
 #      patterns:
 #        - /*

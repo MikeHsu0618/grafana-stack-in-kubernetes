@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: beyla
+  labels:
+      app: beyla
+      instrumentation: beyla
 spec:
   selector:
     matchLabels:
@@ -20,6 +23,11 @@ spec:
           securityContext:
             privileged: true
           command: ["/beyla", "--config=/config/beyla-config.yml"]
+          ports:
+            - containerPort: 8999
+              name: metrics
+            - containerPort: 8990
+              name: internal
           # mount the previous ConfigMap as a folder
           volumeMounts:
             - mountPath: /config
