@@ -454,6 +454,7 @@ Forwarding from [::1]:3100 -> 3100
 在認識市面上主流的分佈式追蹤工具後，有了像 Opentelemetry SDK/Auto-instrumentation、Jaeger 以及 KeyVal Odigos 先入為主的觀念後，一開始的我也很自然而然的認為，Grafana Beyla 是一款跟 Opentelemetry Auto-instrumentation 一樣，透過 eBPF 技術在 Kernel 中捕捉每個分佈式服務的請求進而產生追蹤訊號。沒想到雖然都是使用 eBPF 技術，卻竟然是完全不同層面的工具，而 Grafna Beyla 是無入侵的方式可以在短時間內建立，追求更極致細膩的 RED 指標加以利用，這也使我們對 eBPF 技術的強大有更深一層的認識。
 
 在官方談到對 Beyla 的展望時，也對實現分佈式追蹤抱持樂觀開放性的看法。畢竟在我們上面的範例中，Grafana Beyla 只是很單純的收集並展現 RED 指標的應用，還沒有展現出 eBPF 生態真正的威力。同時 Grafana 團隊也在針對 Kubernetes 與 Opentelemetry 加入更多支援功能（像 kubernetes decorator），可以看出不僅是 Grafana 團隊，整個社群都還在摸索可觀測性領域的最大可能性，那可是最令人期待的。
+
 ---
 
 相關程式碼同步收錄在：
