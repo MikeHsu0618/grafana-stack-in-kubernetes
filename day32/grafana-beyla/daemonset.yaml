@@ -1,3 +1,4 @@
+# daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -15,25 +16,25 @@ spec:
         instrumentation: beyla
     spec:
       serviceAccountName: default
-      hostPID: true  #important!
+      hostPID: true # important!
+      # mount the ConfigMap as a folder
+      volumes:
+        - name: beyla-config
+          configMap:
+            name: beyla-config
       containers:
         - name: beyla
           image: grafana/beyla:latest
           imagePullPolicy: IfNotPresent
           securityContext:
-            privileged: true
+            privileged: true # important!
           command: ["/beyla", "--config=/config/beyla-config.yml"]
           ports:
+            # expose the metrics ports
             - containerPort: 8999
               name: metrics
             - containerPort: 8990
               name: internal
-          # mount the previous ConfigMap as a folder
           volumeMounts:
             - mountPath: /config
               name: beyla-config
-      # tell beyla where to find the configuration file
-      volumes:
-        - name: beyla-config
-          configMap:
-            name: beyla-config

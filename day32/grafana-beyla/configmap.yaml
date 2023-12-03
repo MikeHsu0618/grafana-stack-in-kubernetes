@@ -1,3 +1,4 @@
+# configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,25 +7,20 @@ data:
   beyla-config.yml: |
     print_traces: true
     log_level: debug
+    open_port: 80-8999
     otel_traces_export:
       endpoint: http://tempo-distributor.tracing:4317
     prometheus_export:
       port: 8999
       path: /metrics
-      report_target: false
-      report_peer: false
+      report_target: false # disabled by default to avoid cardinality explosion in paths.
+      report_peer: false   # disabled by default to avoid cardinality explosion in paths.
     internal_metrics:
-      port: 8990
-      path: /metrics
-    open_port: 80-8999
-    #executable_name: "goblog"
-#    attributes:
-#      kubernetes:
-#        enable: true
-#    routes:
-#      patterns:
-#        - /*
-      #    discovery:
-#      services:
-#        - namespace: default
-#          exe_path_regexp: node
+      prometheus:
+        port: 8990
+        path: /metrics
+    routes:
+      ignored_patterns:
+        - /metrics
+        - /health
+      unmatched: heuristic
