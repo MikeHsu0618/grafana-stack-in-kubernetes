@@ -1,0 +1,112 @@
+fullnameOverride: "prometheus-stack"
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeApiServer:
+  enabled: true
+
+kube-state-metrics:
+  prometheus:
+    monitor:
+      enabled: true
+  selfMonitor:
+    enabled: true
+
+kubelet:
+  enabled: true
+  serviceMonitor:
+    cAdvisor: false
+
+nodeExporter:
+  enabled: true
+  hostRootfs: true
+
+prometheus-node-exporter:
+  hostRootFsMount:
+    enabled: true
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+
+  adminUser: admin
+  adminPassword: admin
+
+  defaultDashboardsEnabled: true
+  defaultDashboardsTimezone: Asia/Taipei
+
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Tempo
+          type: tempo
+          access: proxy
+          url: http://tempo-gateway.tracing
+          isDefault: false
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-gateway.logging
+          isDefault: false
+
+  grafana.ini:
+    feature_toggles:
+      correlations: true
+      editPanelCSVDragAndDrop: true
+      enableDatagridEditing: true
+      exploreMixedDatasource: true
+      nestedFolders: true
+      newTraceViewHeader: true
+      publicDashboards: true
+      traceToMetrics: true
+    users:
+      viewers_can_edit: true
+
+  persistence:
+    accessModes:
+      - ReadWriteOnce
+    enabled: true
+    size: 10Gi
+    type: pvc
+
+
+prometheusOperator:
+  enabled: true
+
+prometheus:
+  enabled: true
+
+  agentMode: false
+
+  prometheusSpec:
+    enableFeatures: []
+
+    enableRemoteWriteReceiver: true
+    remoteWriteDashboards: true
+
+    retention: 10d
+
+    remoteWrite: []
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+    additionalScrapeConfigs: []
