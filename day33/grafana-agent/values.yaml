@@ -1,0 +1,80 @@
+# values.yaml
+fullnameOverride: grafana-agent-collector
+
+controller:
+  type: 'deployment'
+  replicas: 1
+
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: 'prometheus-stack'
+
+agent:
+  mode: 'flow'
+  clustering:
+    enabled: false
+  enableReporting: false
+  extraPorts:
+     - name: "faro"
+       port: 12347
+       targetPort: 12347
+       protocol: "TCP"
+  configMap:
+    create: true
+    content: |
+      logging {
+      	level  = "info"
+      	format = "logfmt"
+      }
+      
+      faro.receiver "default" {   
+        server {
+          cors_allowed_origins = ["*"]
+        }
+        output {
+          logs   = [loki.process.label.receiver]
+          traces = [otelcol.exporter.otlp.traces.input]
+        }
+      }
+      
+      loki.process "label" {
+        stage.logfmt {
+          mapping = { 
+            "app" = "app_name",
+            "version" = "app_version",
+            "enviroment" = "app_environment",
+            "kind" = "",
+          }
+        }  
+
+        stage.labels {
+          values = {
+            app  = "",         
+            version = "",
+            enviroment = "",
+            kind = "",
+          }
+        }
+
+        forward_to = [loki.write.default.receiver]
+      }
+      
+      loki.write "default" {
+        endpoint {
+          url = "http://loki-gateway.logging/loki/api/v1/push"
+        }
+        external_labels = {}
+      }
+      
+      otelcol.exporter.otlp "traces" {
+        client {
+          endpoint = "tempo-distributor.tracing:4317"
+          tls {
+            insecure             = true
+            insecure_skip_verify = true
+          }
+        }
+      }
+
+
