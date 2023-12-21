@@ -92,7 +92,8 @@ memcachedExporter:
 metaMonitoring:
   serviceMonitor:
     enabled: true
-
+    labels:
+      release: 'prometheus-stack'
   grafanaAgent:
     enabled: false
     installOperator: false
