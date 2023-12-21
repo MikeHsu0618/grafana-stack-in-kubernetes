@@ -2,13 +2,13 @@
 fullnameOverride: loki
 
 customParams:
-  authEnabled: true
+  authEnabled: false
 
 serviceMonitor:
-  enabled: true
+  enabled: false
 
 prometheusRule:
-  enabled: true
+  enabled: false
 
 ingester:
   kind: StatefulSet
@@ -36,7 +36,7 @@ queryFrontend:
   resources: {}
 
 queryScheduler:
-  enabled: true
+  enabled: false
   replicas: 2
   affinity: ''
   resources: {}
@@ -49,5 +49,5 @@ gateway:
   resources: {}
 
 compactor:
-  enabled: true
+  enabled: false
   resources: {}
