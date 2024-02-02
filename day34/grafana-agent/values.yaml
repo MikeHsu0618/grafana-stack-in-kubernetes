@@ -43,7 +43,7 @@ agent:
           mapping = { 
             "app" = "app_name",
             "version" = "app_version",
-            "enviroment" = "app_environment",
+            "environment" = "app_environment",
             "kind" = "",
           }
         }  
@@ -52,7 +52,7 @@ agent:
           values = {
             app  = "",         
             version = "",
-            enviroment = "",
+            environment = "",
             kind = "",
           }
         }
